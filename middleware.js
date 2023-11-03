@@ -1,15 +1,26 @@
 let express = require("express");
 
 let fs = require('fs');
+const morgan = require("morgan");
 
 const index = fs.readFileSync('./index.html', 'utf-8')
 const data = JSON.parse(fs.readFileSync('data.json', 'utf-8'));
 const product = data.products
 
+const morgan = require("morgan");
+
 
 
 
 const app = express();
+
+app.use(express.json());
+app.use(morgan)
+
+
+app.use(express.static("public"));      // This line will host index.html file from public folder.
+                                        // we can host any static file (image, html etc...)
+
 
 
 // Middleware concept
@@ -23,24 +34,26 @@ const app = express();
 
 
 
-const auth = (req, res, next) => {
+// const auth = (req, res, next) => {
 
 
-    if (req.query.password === 'melu') {
-        next();
-    } else {
-        res.sendStatus(401);
-    }
-}
+//     if (req.query.password === 'melu') {
+//         next();
+//     } else {
+//         res.sendStatus(401);
+//     }
+// }
 
 app.use(express.urlencoded({extended:true}));
-app.use(auth);
+// app.use(auth);
 
 
 app.use((req, res,next)=>{
     fs.writeFileSync("./logs.txt",req.ip, req.url, req.hostname, '\n');
     req.next();
 });
+
+
 
 
 app.get('/', (req, res) => {
@@ -51,7 +64,6 @@ app.get('/', (req, res) => {
 })
 
 
-app.use(express.static("public"));      // This line will host index.html file from public folder.
 
 
 
