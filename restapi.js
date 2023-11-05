@@ -6,23 +6,30 @@ let express = require("express");
 // const product = data.products
 const morgan = require("morgan");
 const productController = require("./controller/product");
+const productRouter = express.Router()
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan("dev"));
-
-
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"))
+app.use("/api",productRouter);
 
 
 
-app.get("/products", productController.getAllProduct);
-app.get("/product/:id", productController.getproduct);
-app.post('/addProduct', productController.createProduct);
-app.put("/product/:id", productController.replaceProduct);
-app.patch("product/:id", productController.updateProduct);
+// app.get("/products", productController.getAllProduct)
+// .get("/product/:id", productController.getproduct)
+// .post('/addProduct', productController.createProduct)
+// .put("/product/:id", productController.replaceProduct)
+// .patch("product/:id", productController.updateProduct);
 
+
+productRouter.get("/products", productController.getAllProduct)
+.get("/product/:id", productController.getproduct)
+.post('/addProduct', productController.createProduct)
+.put("/product/:id", productController.replaceProduct)
+.patch("product/:id", productController.updateProduct);
 
 
 
