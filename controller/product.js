@@ -11,6 +11,7 @@ exports.getAllProduct = (req, res) => {
     res.json(product);
 }
 
+
 exports.getproduct = (req, res) => {
     const id = req.params.id;
     console.log(`Requested Product with ID ${id}`);
